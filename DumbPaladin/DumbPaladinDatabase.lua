@@ -300,6 +300,13 @@ DumbPaladin_DefaultDatabase = {
                             [5] = 9910,
                             [6] = 26992
                         }
+                    },
+                    omenOfClarity = {
+                        name = select(1, GetSpellInfo(16864)),
+                        required = false,
+                        spellIds = {
+                            [0] = 16864
+                        }
                     }
                 }
             },
