@@ -120,10 +120,18 @@ function DumbPaladin:MissingRequiredBuffs(requiredBuffs)
 end
 
 
+function DumbPaladin:IsWarningEnabled()
+    return self.db.profile.settings.warnings.chat == true or
+            self.db.profile.settings.warnings.raidWarning == true or
+            self.db.profile.settings.warnings.flashScreen == true or
+            self.db.profile.settings.warnings.soundWarning == true
+end
+
+
 -- Checks the player's current buffs against the required buffs, and displays messages
 -- letting the player know which buffs he's missing
 function DumbPaladin:CheckBuffs()
-    if self.db.profile.settings.warnings.chat == false then
+    if not DumbPaladin:IsWarningEnabled() then
         DumbPaladin:Debug("Warnings disabled. Skipping buff check.")
         return
     end
@@ -315,13 +323,15 @@ function DumbPaladin:RegisterEvents()
     EventFrame:RegisterEvent("UNIT_AURA")
 
     EventFrame:SetScript("OnEvent", function(self, event, ...)
-        DumbPaladin:Debug("Event caught: " .. event)
-
         if event=="PLAYER_REGEN_DISABLED" then
+            DumbPaladin:Debug("Entering combat")
             DumbPaladin:EnteredCombat()
         elseif event=="UNIT_AURA" then
             local unitId = ...
-            DumbPaladin:BuffChanged(unitId)
+            if unitId == "player" then
+                DumbPaladin:Debug("Buff gained/dropped")
+                DumbPaladin:BuffChanged(unitId)
+            end
         end
     end)
 end
@@ -335,6 +345,6 @@ function DumbPaladin:OnInitialize()
 end
 
 
-function ClamBake:OnEnable()
+function DumbPaladin:OnEnable()
     DumbPaladin:RegisterEvents()
 end
