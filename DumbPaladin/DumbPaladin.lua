@@ -58,7 +58,7 @@ function DumbPaladin:RequiredBuffs()
         DumbPaladin:Debug("Checking buffs for class " .. class)
 
         for _, classBuffProperties in pairs(classProperties.buffs) do
-            local name, _, _, _, _, _, _ = GetSpellInfo(classBuffProperties.spellIds[0])
+            local name = select(1, GetSpellInfo(classBuffProperties.spellIds[0]))
 
             DumbPaladin:Debug("Checking if " .. name .. " is required")
             if classBuffProperties.required then
@@ -120,7 +120,7 @@ function DumbPaladin:MissingRequiredBuffs(requiredBuffs)
 end
 
 
-function DumbPaladin:IsWarningEnabled()
+function DumbPaladin:IsAtLeastOneWarningTypeEnabled()
     return self.db.profile.settings.warnings.chat == true or
             self.db.profile.settings.warnings.raidWarning == true or
             self.db.profile.settings.warnings.flashScreen == true or
@@ -131,8 +131,8 @@ end
 
 -- Checks the player's current buffs against the required buffs, and displays messages
 -- letting the player know which buffs he's missing
-function DumbPaladin:CheckBuffs()
-    if not DumbPaladin:IsWarningEnabled() then
+function DumbPaladin:CheckForMissingRequiredBuffs()
+    if not DumbPaladin:IsAtLeastOneWarningTypeEnabled() then
         DumbPaladin:Debug("Warnings disabled. Skipping buff check.")
         return
     end
@@ -263,7 +263,7 @@ function DumbPaladin:EnteredCombat()
         return
     end
 
-    DumbPaladin:CheckBuffs()
+    DumbPaladin:CheckForMissingRequiredBuffs()
 end
 
 
@@ -273,7 +273,7 @@ function DumbPaladin:BuffChanged(unitId)
     end
 
     if unitId == "player" and UnitAffectingCombat(unitId) then
-        DumbPaladin:CheckBuffs()
+        DumbPaladin:CheckForMissingRequiredBuffs()
     end
 end
 
@@ -341,21 +341,33 @@ end
 
 -- Register for all the events this addon listens for
 function DumbPaladin:RegisterEvents()
-    local EventFrame = CreateFrame("Frame", "DumbPaladin_EventFrame")
-
-    EventFrame:RegisterEvent("PLAYER_REGEN_DISABLED")
-    EventFrame:RegisterEvent("UNIT_AURA")
-
-    EventFrame:SetScript("OnEvent", function(self, event, ...)
-        if event=="PLAYER_REGEN_DISABLED" then
+    local eventHandlers = {
+        ["PLAYER_REGEN_DISABLED"] = function()
             DumbPaladin:Debug("Entering combat")
             DumbPaladin:EnteredCombat()
-        elseif event=="UNIT_AURA" then
+        end,
+        ["UNIT_AURA"] = function(...)
             local unitId = ...
             if unitId == "player" then
                 DumbPaladin:Debug("Buff gained/dropped")
                 DumbPaladin:BuffChanged(unitId)
             end
+        end
+    }
+
+    local EventFrame = CreateFrame("Frame", "DumbPaladin_EventFrame")
+
+    -- Register events
+    for event, _ in pairs(eventHandlers) do
+        EventFrame:RegisterEvent(event)
+    end
+
+    -- Execute event handler
+    EventFrame:SetScript("OnEvent", function(_, event, ...)
+        local eventHandler = eventHandlers[event]
+
+        if eventHandler then
+            eventHandler(...)
         end
     end)
 end

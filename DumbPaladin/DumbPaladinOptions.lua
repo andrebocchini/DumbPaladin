@@ -83,7 +83,7 @@ DumbPaladin_Options = {
                     type = "execute",
                     guiHidden = true,
                     func = function ()
-                        DumbPaladin:CheckBuffs()
+                        DumbPaladin:CheckForMissingRequiredBuffs()
                     end
                 }
             }
