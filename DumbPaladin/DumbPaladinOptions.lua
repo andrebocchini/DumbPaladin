@@ -146,6 +146,19 @@ DumbPaladin_Options = {
                     get = function(info)
                         return DumbPaladin.db.profile.settings.warnings.soundWarning
                     end
+                },
+                textToSpeect = {
+                    name = L["TextToSpeech"],
+                    desc = L["TextToSpeechTooltip"],
+                    cmdHidden = true,
+                    type = "toggle",
+                    set = function(info, input)
+                        DumbPaladin.db.profile.settings.warnings.textToSpeech = input
+                        DumbPaladin:OnSettingToggled(info, input)
+                    end,
+                    get = function(info)
+                        return DumbPaladin.db.profile.settings.warnings.textToSpeech
+                    end
                 }
             }
         },

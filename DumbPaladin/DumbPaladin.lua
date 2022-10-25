@@ -124,7 +124,8 @@ function DumbPaladin:IsWarningEnabled()
     return self.db.profile.settings.warnings.chat == true or
             self.db.profile.settings.warnings.raidWarning == true or
             self.db.profile.settings.warnings.flashScreen == true or
-            self.db.profile.settings.warnings.soundWarning == true
+            self.db.profile.settings.warnings.soundWarning == true or
+            self.db.profile.settings.warnings.textToSpeech == true
 end
 
 
@@ -147,39 +148,48 @@ function DumbPaladin:CheckBuffs()
     end
 
     if missingBuffCount > 0 then
-        local indexedTable = {}
-        local index = 1
-        for buffName in pairs(missingRequiredBuffs) do
-            indexedTable[index] = buffName
-            index = index + 1
-        end
+        DumbPaladin:IssueWarnings(missingRequiredBuffs)
+    end
+end
 
-        local accumulatedBuffs = ""
-        for i, value in ipairs(indexedTable) do
-            if i == 1 then
-                accumulatedBuffs = value
-            else
-                accumulatedBuffs = accumulatedBuffs .. ", " .. value
-            end
-        end
 
-        if self.db.profile.settings.warnings.raidWarning == true then
-            DumbPaladin:RaidWarning(L["MissingBuffsWarning"])
-            DumbPaladin:RaidWarning(accumulatedBuffs)
-        end
+function DumbPaladin:IssueWarnings(missingRequiredBuffs)
+    local indexedTable = {}
+    local index = 1
+    for buffName in pairs(missingRequiredBuffs) do
+        indexedTable[index] = buffName
+        index = index + 1
+    end
 
-        if self.db.profile.settings.warnings.chat == true then
-            DumbPaladin:Print(L["MissingBuffsWarning"])
-            DumbPaladin:Print(accumulatedBuffs)
+    local accumulatedBuffs = ""
+    for i, value in ipairs(indexedTable) do
+        if i == 1 then
+            accumulatedBuffs = value
+        else
+            accumulatedBuffs = accumulatedBuffs .. ", " .. value
         end
+    end
 
-        if self.db.profile.settings.warnings.flashScreen == true then
-            DumbPaladin:FlashScreen()
-        end
+    if self.db.profile.settings.warnings.raidWarning == true then
+        DumbPaladin:RaidWarning(L["MissingBuffsWarning"])
+        DumbPaladin:RaidWarning(accumulatedBuffs)
+    end
 
-        if self.db.profile.settings.warnings.soundWarning == true then
-            DumbPaladin:PlayWarningSound()
-        end
+    if self.db.profile.settings.warnings.chat == true then
+        DumbPaladin:Print(L["MissingBuffsWarning"])
+        DumbPaladin:Print(accumulatedBuffs)
+    end
+
+    if self.db.profile.settings.warnings.flashScreen == true then
+        DumbPaladin:ScreenFlashWarning()
+    end
+
+    if self.db.profile.settings.warnings.soundWarning == true then
+        DumbPaladin:SoundWarning()
+    end
+
+    if self.db.profile.settings.warnings.textToSpeech == true then
+        DumbPaladin:TextToSpeechWarning(accumulatedBuffs)
     end
 end
 
@@ -190,10 +200,10 @@ end
 
 
 -- Flashes red around the edges of the screen for a few seconds
-function DumbPaladin:FlashScreen()
+function DumbPaladin:ScreenFlashWarning()
     if not self.FlashFrame then
         local f = CreateFrame("Frame", "DumbPaladinFlashingFrame")
-        
+
         f:SetToplevel(true)
         f:SetFrameStrata("FULLSCREEN_DIALOG")
         f:SetAllPoints(UIParent)
@@ -233,8 +243,18 @@ function DumbPaladin:FlashScreen()
 end
 
 
-function DumbPaladin:PlayWarningSound()
+function DumbPaladin:SoundWarning()
     PlaySound(6594)
+end
+
+
+function DumbPaladin:TextToSpeechWarning(accumulatedBuffs)
+    local destination = Enum.VoiceTtsDestination.LocalPlayback
+    local speed = -2
+    local volume = GetCVar("Sound_MasterVolume") * 100
+
+    C_VoiceChat.SpeakText(0, L["MissingBuffsWarning"], destination, speed, volume)
+    C_VoiceChat.SpeakText(0, accumulatedBuffs, destination, speed, volume)
 end
 
 

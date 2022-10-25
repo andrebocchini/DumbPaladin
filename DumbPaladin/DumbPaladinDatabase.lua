@@ -16,7 +16,8 @@ DumbPaladin_DefaultDatabase = {
                 chat = true,
                 raidWarning = true,
                 flashScreen = true,
-                soundWarning = true
+                soundWarning = true,
+                textToSpeech = true,
             }
         },
         classes = {
