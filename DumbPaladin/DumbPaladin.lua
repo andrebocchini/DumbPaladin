@@ -192,21 +192,24 @@ end
 -- Flashes red around the edges of the screen for a few seconds
 function DumbPaladin:FlashScreen()
     if not self.FlashFrame then
-        local flasher = CreateFrame("Frame", "Tc2FlashFrame")
-        flasher:SetToplevel(true)
-        flasher:SetFrameStrata("FULLSCREEN_DIALOG")
-        flasher:SetAllPoints(UIParent)
-        flasher:EnableMouse(false)
-        flasher:Hide()
-        flasher.texture = flasher:CreateTexture(nil, "BACKGROUND")
-        flasher.texture:SetTexture("Interface\\FullScreenTextures\\LowHealth")
-        flasher.texture:SetAllPoints(UIParent)
-        flasher.texture:SetBlendMode("ADD")
-        flasher:SetScript("OnShow", function(self)
+        local f = CreateFrame("Frame", "DumbPaladinFlashingFrame")
+        
+        f:SetToplevel(true)
+        f:SetFrameStrata("FULLSCREEN_DIALOG")
+        f:SetAllPoints(UIParent)
+        f:EnableMouse(false)
+        f:Hide()
+        f.texture = f:CreateTexture(nil, "BACKGROUND")
+        f.texture:SetTexture("Interface\\FullScreenTextures\\LowHealth")
+        f.texture:SetAllPoints(UIParent)
+        f.texture:SetBlendMode("ADD")
+
+        f:SetScript("OnShow", function(self)
             self.elapsed = 0
             self:SetAlpha(0)
         end)
-        flasher:SetScript("OnUpdate", function(self, elapsed)
+
+        f:SetScript("OnUpdate", function(self, elapsed)
             elapsed = self.elapsed + elapsed
             if elapsed < 2.6 then
                 local alpha = elapsed % 1.3
@@ -222,7 +225,8 @@ function DumbPaladin:FlashScreen()
             end
             self.elapsed = elapsed
         end)
-        self.FlashFrame = flasher
+
+        self.FlashFrame = f
     end
 
     self.FlashFrame:Show()
