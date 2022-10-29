@@ -368,6 +368,13 @@ DumbPaladin_DefaultDatabase = {
                             [0] = 25780
                         }
                     },
+                    sacredShield = {
+                        name = select(1, GetSpellInfo(53601)),
+                        required = false,
+                        spellIds = {
+                            [0] = 53601,
+                        }
+                    },
                     sealOfCorruption = {
                         name = select(1, GetSpellInfo(348704)),
                         required = false,
