@@ -22,8 +22,8 @@ local function buildClassOption(classId, classDetails)
     
     classOptions["name"] = classDetails.name
     classOptions["type"] = "group"
-    classOptions["inline"] = true
     classOptions["cmdHidden"] = true
+    classOptions["childGroups"] = "tab"
     classOptions["set"] = function(info, input)
         DumbPaladin.db.profile.classes[classId].buffs[info[#info]].required = input
         DumbPaladin:OnSettingToggled(info, input)
@@ -51,6 +51,7 @@ end
 DumbPaladin_Options = {
     name = DumbPaladin.NAME,
     type = "group",
+    childGroups = "tab",
     args = {
         general = {
             order = 1,
@@ -201,8 +202,8 @@ DumbPaladin_Options = {
             order = 4,
             name = L["ClassBuffsSettings"],
             type = "group",
-            inline = true,
             cmdHidden = true,
+            childGroups = "tab",
             args = buildClassOptions(DumbPaladin_DefaultDatabase.profile.classes)
         }
     }
