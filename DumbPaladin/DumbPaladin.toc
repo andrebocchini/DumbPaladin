@@ -11,6 +11,13 @@ Embeds.xml
 
 Localizations\enUS.lua
 
-DumbPaladin.lua
+DumbPaladinBase.lua
+DumbPaladinStaticValues.lua
 DumbPaladinDatabase.lua
 DumbPaladinOptions.lua
+DumbPaladinWarnings.lua
+DumbPaladinBuffs.lua
+DumbPaladinGear.lua
+DumbPaladinMinimap.lua
+DumbPaladinEvents.lua
+DumbPaladinInit.lua
