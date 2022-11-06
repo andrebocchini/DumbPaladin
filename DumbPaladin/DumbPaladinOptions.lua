@@ -378,12 +378,14 @@ local DumbPaladin_Options = {
     }
 }
 
--- Creates and registers the options window
-function DumbPaladin:RegisterOptions()
+function DumbPaladin:ConfigureProfileOptions()
     DumbPaladin_Options.args.profile = AceDBOptions:GetOptionsTable(DumbPaladin.db)
     DumbPaladin_Options.args.profile.order = 4
     DumbPaladin_Options.args.profile.cmdHidden = true
+end
 
+-- Creates and registers the options window
+function DumbPaladin:RegisterOptions()
     AceConfigRegistry:RegisterOptionsTable(DumbPaladin.NAME, DumbPaladin_Options, false)
 end
 

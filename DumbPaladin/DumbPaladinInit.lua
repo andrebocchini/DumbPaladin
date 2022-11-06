@@ -1,5 +1,6 @@
 function DumbPaladin:OnInitialize()
     DumbPaladin:InitializeDatabase()
+    DumbPaladin:ConfigureProfileOptions()
     DumbPaladin:RegisterOptions()
     DumbPaladin:CreateSlashCommands()
     DumbPaladin:SetupMinimapIcon()
