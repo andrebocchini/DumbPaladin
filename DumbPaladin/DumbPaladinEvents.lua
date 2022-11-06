@@ -1,5 +1,5 @@
 function DumbPaladin:PLAYER_REGEN_DISABLED()
-    if not DumbPaladin.db.profile.settings.buffChecks.whenEnteringCombat then
+    if not DumbPaladin.db.profile.settings.buffs.checks.whenEnteringCombat then
         return
     end
 
@@ -11,7 +11,7 @@ function DumbPaladin:UNIT_AURA(unit)
         unit = "(nil)"
     end
 
-    if not DumbPaladin.db.profile.settings.buffChecks.whenInCombat then
+    if not DumbPaladin.db.profile.settings.buffs.checks.whenInCombat then
         return
     end
 

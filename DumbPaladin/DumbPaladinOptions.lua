@@ -50,11 +50,11 @@ local function buildClassOption(classId, classDetails)
     classOptions["type"] = "group"
     classOptions["childGroups"] = "tab"
     classOptions["set"] = function(info, input)
-        DumbPaladin.db.profile.classes[classId].buffs[info[#info]].required = input
+        DumbPaladin.db.profile.settings.buffs.classes[classId].buffs[info[#info]].required = input
         DumbPaladin:OnSettingToggled(info, input)
     end
     classOptions["get"] = function(info)
-        return DumbPaladin.db.profile.classes[classId].buffs[info[#info]].required
+        return DumbPaladin.db.profile.settings.buffs.classes[classId].buffs[info[#info]].required
     end
     classOptions["args"] = buildClassBuffOptions(classDetails.buffs)
 
@@ -141,11 +141,11 @@ local DumbPaladin_Options = {
                             cmdHidden = true,
                             type = "toggle",
                             set = function(info, input)
-                                DumbPaladin.db.profile.settings.warnings.chat = input
+                                DumbPaladin.db.profile.settings.buffs.warnings.chat = input
                                 DumbPaladin:OnSettingToggled(info, input)
                             end,
                             get = function()
-                                return DumbPaladin.db.profile.settings.warnings.chat
+                                return DumbPaladin.db.profile.settings.buffs.warnings.chat
                             end
                         },
                         raidWarning = {
@@ -153,11 +153,11 @@ local DumbPaladin_Options = {
                             desc = L["RaidWarningTooltip"],
                             type = "toggle",
                             set = function(info, input)
-                                DumbPaladin.db.profile.settings.warnings.raidWarning = input
+                                DumbPaladin.db.profile.settings.buffs.warnings.raidWarning = input
                                 DumbPaladin:OnSettingToggled(info, input)
                             end,
                             get = function()
-                                return DumbPaladin.db.profile.settings.warnings.raidWarning
+                                return DumbPaladin.db.profile.settings.buffs.warnings.raidWarning
                             end
                         },
                         flashScreen = {
@@ -165,11 +165,11 @@ local DumbPaladin_Options = {
                             desc = L["FlashScreenTooltip"],
                             type = "toggle",
                             set = function(info, input)
-                                DumbPaladin.db.profile.settings.warnings.flashScreen = input
+                                DumbPaladin.db.profile.settings.buffs.warnings.flashScreen = input
                                 DumbPaladin:OnSettingToggled(info, input)
                             end,
                             get = function()
-                                return DumbPaladin.db.profile.settings.warnings.flashScreen
+                                return DumbPaladin.db.profile.settings.buffs.warnings.flashScreen
                             end
                         },
                         soundWarning = {
@@ -177,11 +177,11 @@ local DumbPaladin_Options = {
                             desc = L["SoundWarningTooltip"],
                             type = "toggle",
                             set = function(info, input)
-                                DumbPaladin.db.profile.settings.warnings.soundWarning = input
+                                DumbPaladin.db.profile.settings.buffs.warnings.soundWarning = input
                                 DumbPaladin:OnSettingToggled(info, input)
                             end,
                             get = function()
-                                return DumbPaladin.db.profile.settings.warnings.soundWarning
+                                return DumbPaladin.db.profile.settings.buffs.warnings.soundWarning
                             end
                         },
                         textToSpeech = {
@@ -189,11 +189,11 @@ local DumbPaladin_Options = {
                             desc = L["TextToSpeechTooltip"],
                             type = "toggle",
                             set = function(info, input)
-                                DumbPaladin.db.profile.settings.warnings.textToSpeech = input
+                                DumbPaladin.db.profile.settings.buffs.warnings.textToSpeech = input
                                 DumbPaladin:OnSettingToggled(info, input)
                             end,
                             get = function()
-                                return DumbPaladin.db.profile.settings.warnings.textToSpeech
+                                return DumbPaladin.db.profile.settings.buffs.warnings.textToSpeech
                             end
                         }
                     }
@@ -208,11 +208,11 @@ local DumbPaladin_Options = {
                             desc = L["CheckWhenEnteringCombatDescription"],
                             type = "toggle",
                             set = function(info, input)
-                                DumbPaladin.db.profile.settings.buffChecks.whenEnteringCombat = input
+                                DumbPaladin.db.profile.settings.buffs.checks.whenEnteringCombat = input
                                 DumbPaladin:OnSettingToggled(info, input)
                             end,
                             get = function()
-                                return DumbPaladin.db.profile.settings.buffChecks.whenEnteringCombat
+                                return DumbPaladin.db.profile.settings.buffs.checks.whenEnteringCombat
                             end
                         },
                         whenInCombat = {
@@ -220,11 +220,11 @@ local DumbPaladin_Options = {
                             desc = L["CheckInCombatDescription"],
                             type = "toggle",
                             set = function(info, input)
-                                DumbPaladin.db.profile.settings.buffChecks.whenInCombat = input
+                                DumbPaladin.db.profile.settings.buffs.checks.whenInCombat = input
                                 DumbPaladin:OnSettingToggled(info, input)
                             end,
                             get = function()
-                                return DumbPaladin.db.profile.settings.buffChecks.whenInCombat
+                                return DumbPaladin.db.profile.settings.buffs.checks.whenInCombat
                             end
                         },
                     }
@@ -243,7 +243,7 @@ local DumbPaladin_Options = {
             cmdHidden = true,
             args = {
                 checks = {
-                    order = 3,
+                    order = 1,
                     name = L["GearChecksSettings"],
                     type = "group",
                     inline = true,
@@ -253,17 +253,87 @@ local DumbPaladin_Options = {
                             desc = L["CheckWhenEnteringDungeonsDescription"],
                             type = "toggle",
                             set = function(info, input)
-                                DumbPaladin.db.profile.settings.gearChecks.whenEnteringDungeons = input
+                                DumbPaladin.db.profile.settings.gear.checks.whenEnteringDungeons = input
                                 DumbPaladin:OnSettingToggled(info, input)
                             end,
                             get = function()
-                                return DumbPaladin.db.profile.settings.gearChecks.whenEnteringDungeons
+                                return DumbPaladin.db.profile.settings.gear.checks.whenEnteringDungeons
                             end
                         },
                     },
                 },
+                warnings = {
+                    name = L["WarningsSettings"],
+                    order = 2,
+                    type = "group",
+                    inline = true,
+                    args = {
+                        chat = {
+                            name = L["ChatWarning"],
+                            desc = L["ChatWarningTooltip"],
+                            cmdHidden = true,
+                            type = "toggle",
+                            set = function(info, input)
+                                DumbPaladin.db.profile.settings.gear.warnings.chat = input
+                                DumbPaladin:OnSettingToggled(info, input)
+                            end,
+                            get = function()
+                                return DumbPaladin.db.profile.settings.gear.warnings.chat
+                            end
+                        },
+                        raidWarning = {
+                            name = L["RaidWarning"],
+                            desc = L["RaidWarningTooltip"],
+                            type = "toggle",
+                            set = function(info, input)
+                                DumbPaladin.db.profile.settings.tabards.gear.raidWarning = input
+                                DumbPaladin:OnSettingToggled(info, input)
+                            end,
+                            get = function()
+                                return DumbPaladin.db.profile.settings.gear.warnings.raidWarning
+                            end
+                        },
+                        flashScreen = {
+                            name = L["FlashScreen"],
+                            desc = L["FlashScreenTooltip"],
+                            type = "toggle",
+                            set = function(info, input)
+                                DumbPaladin.db.profile.settings.gear.warnings.flashScreen = input
+                                DumbPaladin:OnSettingToggled(info, input)
+                            end,
+                            get = function()
+                                return DumbPaladin.db.profile.settings.gear.warnings.flashScreen
+                            end
+                        },
+                        soundWarning = {
+                            name = L["SoundWarning"],
+                            desc = L["SoundWarningTooltip"],
+                            type = "toggle",
+                            set = function(info, input)
+                                DumbPaladin.db.profile.settings.gear.warnings.soundWarning = input
+                                DumbPaladin:OnSettingToggled(info, input)
+                            end,
+                            get = function()
+                                return DumbPaladin.db.profile.settings.gear.warnings.soundWarning
+                            end
+                        },
+                        textToSpeech = {
+                            name = L["TextToSpeech"],
+                            desc = L["TextToSpeechTooltip"],
+                            type = "toggle",
+                            set = function(info, input)
+                                DumbPaladin.db.profile.settings.gear.warnings.textToSpeech = input
+                                DumbPaladin:OnSettingToggled(info, input)
+                            end,
+                            get = function()
+                                return DumbPaladin.db.profile.settings.gear.warnings.textToSpeech
+                            end
+                        }
+                    }
+                },
                 tabards = {
                     name = L["TabardsSettings"],
+                    order = 3,
                     type = "group",
                     inline = true,
                     args = {
@@ -272,11 +342,11 @@ local DumbPaladin_Options = {
                             name = L["CheckTabards"],
                             type = "toggle",
                             set = function(info, input)
-                                DumbPaladin.db.profile.tabards.checkTabards = input
+                                DumbPaladin.db.profile.settings.gear.tabards.checkTabards = input
                                 DumbPaladin:OnSettingToggled(info, input)
                             end,
                             get = function()
-                                return DumbPaladin.db.profile.tabards.checkTabards
+                                return DumbPaladin.db.profile.settings.gear.tabards.checkTabards
                             end
                         },
                         availableTabards = {
@@ -286,19 +356,19 @@ local DumbPaladin_Options = {
                             style = "dropdown",
                             values = buildTabardNames(DumbPaladin.Tabards),
                             disabled = function()
-                                return not DumbPaladin.db.profile.tabards.checkTabards
+                                return not DumbPaladin.db.profile.settings.gear.tabards.checkTabards
                             end,
                             set = function(_, input)
-                                DumbPaladin.db.profile.tabards.selectedTabard = input
+                                DumbPaladin.db.profile.settings.gear.tabards.selectedTabard = input
                             end,
                             get = function()
-                                local selectedTabard = DumbPaladin.db.profile.tabards.selectedTabard
+                                local selectedTabard = DumbPaladin.db.profile.settings.gear.tabards.selectedTabard
 
                                 if not selectedTabard then
                                     return ""
                                 end
 
-                                return DumbPaladin.db.profile.tabards.selectedTabard
+                                return DumbPaladin.db.profile.settings.gear.tabards.selectedTabard
                             end
                         }
                     }

@@ -23,7 +23,7 @@ function DumbPaladin:GetBuffsUserSelectedAsRequired()
             local name = DumbPaladin:GetSpellName(buffProperties.spellIds[1])
 
             DumbPaladin:PrintDebugMessageToChatWindow("Checking if " .. name .. " is required")
-            if DumbPaladin.db.profile.classes[class].buffs[buff].required then
+            if DumbPaladin.db.profile.settings.buffs.classes[class].buffs[buff].required then
                 DumbPaladin:PrintDebugMessageToChatWindow(name .. " is required")
                 requiredBuffs[name] = buffProperties.spellIds
             else
@@ -151,33 +151,33 @@ function DumbPaladin:IssueMissingBuffWarnings(missingRequiredBuffs)
         end
     end
 
-    if DumbPaladin.db.profile.settings.warnings.raidWarning then
+    if DumbPaladin.db.profile.settings.buffs.warnings.raidWarning then
         DumbPaladin:IssueRaidWarning(L["MissingBuffsWarning"])
         DumbPaladin:IssueRaidWarning(accumulatedBuffs)
     end
 
-    if DumbPaladin.db.profile.settings.warnings.chat then
+    if DumbPaladin.db.profile.settings.buffs.warnings.chat then
         DumbPaladin:PrintMessageToChatWindow(L["MissingBuffsWarning"])
         DumbPaladin:PrintMessageToChatWindow(accumulatedBuffs)
     end
 
-    if DumbPaladin.db.profile.settings.warnings.flashScreen then
+    if DumbPaladin.db.profile.settings.buffs.warnings.flashScreen then
         DumbPaladin:IssueScreenFlashWarning()
     end
 
-    if DumbPaladin.db.profile.settings.warnings.soundWarning then
+    if DumbPaladin.db.profile.settings.buffs.warnings.soundWarning then
         DumbPaladin:IssueSoundWarning()
     end
 
-    if DumbPaladin.db.profile.settings.warnings.textToSpeech then
+    if DumbPaladin.db.profile.settings.buffs.warnings.textToSpeech then
         DumbPaladin:IssueTextToSpeechWarning(accumulatedBuffs)
     end
 end
 
 function DumbPaladin:IsAtLeastOneMissingBuffWarningTypeEnabled()
-    return DumbPaladin.db.profile.settings.warnings.chat or
-            DumbPaladin.db.profile.settings.warnings.raidWarning or
-            DumbPaladin.db.profile.settings.warnings.flashScreen or
-            DumbPaladin.db.profile.settings.warnings.soundWarning or
-            DumbPaladin.db.profile.settings.warnings.textToSpeech
+    return DumbPaladin.db.profile.settings.buffs.warnings.chat or
+            DumbPaladin.db.profile.settings.buffs.warnings.raidWarning or
+            DumbPaladin.db.profile.settings.buffs.warnings.flashScreen or
+            DumbPaladin.db.profile.settings.buffs.warnings.soundWarning or
+            DumbPaladin.db.profile.settings.buffs.warnings.textToSpeech
 end
