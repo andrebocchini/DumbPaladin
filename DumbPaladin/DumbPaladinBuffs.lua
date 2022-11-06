@@ -1,5 +1,9 @@
 local L = LibStub("AceLocale-3.0"):GetLocale(DumbPaladin.NAME)
 
+function DumbPaladin:PerformBuffChecksOnUnit(unit)
+    DumbPaladin:CheckForMissingRequiredBuffsFromUnit(unit)
+end
+
 function DumbPaladin:GetSpellName(spellId)
     if not spellId then
         return "(nil)"

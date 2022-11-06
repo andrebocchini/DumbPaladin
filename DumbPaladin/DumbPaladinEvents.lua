@@ -3,7 +3,7 @@ function DumbPaladin:PLAYER_REGEN_DISABLED()
         return
     end
 
-    DumbPaladin:CheckForMissingRequiredBuffsFromUnit("player")
+    DumbPaladin:PerformBuffChecksOnUnit("player")
 end
 
 function DumbPaladin:UNIT_AURA(unit)
@@ -16,7 +16,7 @@ function DumbPaladin:UNIT_AURA(unit)
     end
 
     if unit == "player" and UnitAffectingCombat(unit) then
-        DumbPaladin:CheckForMissingRequiredBuffsFromUnit(unit)
+        DumbPaladin:PerformBuffChecksOnUnit(unit)
     end
 end
 

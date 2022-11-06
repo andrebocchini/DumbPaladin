@@ -1,5 +1,9 @@
 local L = LibStub("AceLocale-3.0"):GetLocale(DumbPaladin.NAME)
 
+function DumbPaladin:PerformGearChecksOnUnit(unit)
+    DumbPaladin:PerformTabardCheckOnUnit(unit)
+end
+
 function DumbPaladin:IsSupportedInstance(instanceId)
     for _, instanceProperties in pairs(DumbPaladin.SupportedInstances) do
         if instanceProperties.id == instanceId then
@@ -8,10 +12,6 @@ function DumbPaladin:IsSupportedInstance(instanceId)
     end
 
     return false
-end
-
-function DumbPaladin:PerformGearChecksOnUnit(unit)
-    DumbPaladin:PerformTabardCheckOnUnit(unit)
 end
 
 function DumbPaladin:PerformTabardCheckOnUnit(unit)
