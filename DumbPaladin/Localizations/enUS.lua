@@ -44,6 +44,12 @@ L["TabardsSettings"] = "Tabards"
 L["CheckTabards"] = "Check tabards"
 L["AvailableTabards"] = "Available tabards"
 
+L["ItemRackSettings"] = "Item Rack"
+L["CheckItemRackSets"] = "Check item rack sets"
+L["AvailableItemRackSets"] = "Available sets"
+L["You have the wrong item rack set equipped!"] = "You have the wrong item rack set equipped!"
+L["You should be wearing "] = "You should be wearing "
+
 L["ClassBuffsSettings"] = "Class Buffs"
 L["Paladin"] = "Paladin"
 L["Mage"] = "Mage"

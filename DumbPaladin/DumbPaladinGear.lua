@@ -2,6 +2,7 @@ local L = LibStub("AceLocale-3.0"):GetLocale(DumbPaladin.NAME)
 
 function DumbPaladin:PerformGearChecksOnUnit(unit)
     DumbPaladin:PerformTabardCheckOnUnit(unit)
+    DumbPaladin:PerformItemRackSetCheckOnUnit(unit)
 end
 
 function DumbPaladin:IsSupportedInstance(instanceId)
@@ -61,5 +62,34 @@ function DumbPaladin:IssueMissingTabardWarnings(desiredTabardName)
         DumbPaladin:IssueTextToSpeechWarning(L["You have the wrong tabard equipped!"])
         DumbPaladin:IssueTextToSpeechWarning(L["You should be wearing your "] .. desiredTabardName)
     end
+end
+
+function DumbPaladin:PerformItemRackSetCheckOnUnit(unit)
+    if not DumbPaladin.db.profile.settings.gear.itemRack.checkItemRackSet then
+        DumbPaladin:PrintDebugMessageToChatWindow("Item rack set checks disabled. Skipping.")
+        return
+    end
+
+    DumbPaladin:PrintDebugMessageToChatWindow("Checking item rack sets.")
+
+    local desiredItemRackSet = DumbPaladin.db.profile.settings.gear.itemRack.selectedItemRackSet
+
+    if not desiredItemRackSet then
+        DumbPaladin:PrintDebugMessageToChatWindow("No desired item rack set selected. Skipping check.")
+    end
+
+    local currentlyActiveItemRackSet = ItemRackUser.CurrentSet or ""
+
+    if currentlyActiveItemRackSet ~= desiredItemRackSet then
+        DumbPaladin:IssueWrongItemRackSetWarnings(desiredItemRackSet)
+    end
+end
+
+function DumbPaladin:IssueWrongItemRackSetWarnings(desiredItemRackSet)
+    DumbPaladin:PrintMessageToChatWindow(L["You have the wrong item rack set equipped!"])
+    DumbPaladin:PrintMessageToChatWindow(L["You should be wearing "] .. desiredItemRackSet)
+
+    DumbPaladin:IssueRaidWarning(L["You have the wrong item rack set equipped!"])
+    DumbPaladin:IssueRaidWarning(L["You should be wearing "] .. desiredItemRackSet)
 end
 

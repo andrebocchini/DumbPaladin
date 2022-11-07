@@ -208,6 +208,10 @@ local DumbPaladin_DefaultDatabase = {
                     checkTabards = true,
                     selectedTabard = ""
                 },
+                itemRack = {
+                    checkItemRackSet = false,
+                    selectedItemRackSet = ""
+                }
             },
         },
 

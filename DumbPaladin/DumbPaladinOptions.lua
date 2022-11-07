@@ -18,6 +18,27 @@ local function buildTabardNames(tabards)
     return tabardNames
 end
 
+local function buildItemRackSets(itemRack)
+    if not itemRack then
+        return {}
+    end
+
+    if not itemRack.Sets then
+        return {}
+    end
+
+    local itemRackSets = itemRack.Sets
+    local itemRackSetNames = {}
+
+    for name, _ in pairs(itemRackSets) do
+        if name and name ~= "~Unequip" and name ~= "~CombatQueue" then
+            itemRackSetNames[name] = name
+        end
+    end
+
+    return itemRackSetNames
+end
+
 local function buildClassBuffOptions(buffs)
     if not buffs then
         buffs = {}
@@ -93,7 +114,8 @@ local DumbPaladin_Options = {
             type = "execute",
             guiHidden = true,
             func = function()
-                DumbPaladin:CheckForMissingRequiredBuffsFromUnit()
+                DumbPaladin:PerformBuffChecksOnUnit("player")
+                DumbPaladin:PerformGearChecksOnUnit("player")
             end
         },
         general = {
@@ -372,6 +394,48 @@ local DumbPaladin_Options = {
                             end
                         }
                     }
+                },
+                itemRack = {
+                    name = L["ItemRackSettings"],
+                    order = 4,
+                    type = "group",
+                    inline = true,
+                    args = {
+                        checkItemRackSets = {
+                            order = 1,
+                            name = L["CheckItemRackSets"],
+                            type = "toggle",
+                            set = function(info, input)
+                                DumbPaladin.db.profile.settings.gear.itemRack.checkItemRackSet = input
+                                DumbPaladin:OnSettingToggled(info, input)
+                            end,
+                            get = function()
+                                return DumbPaladin.db.profile.settings.gear.itemRack.checkItemRackSet
+                            end
+                        },
+                        availableItemRackSets = {
+                            order = 2,
+                            name = "",
+                            type = "select",
+                            style = "dropdown",
+                            values = buildItemRackSets(ItemRackUser),
+                            disabled = function()
+                                return not DumbPaladin.db.profile.settings.gear.itemRack.checkItemRackSet
+                            end,
+                            set = function(_, input)
+                                DumbPaladin.db.profile.settings.gear.itemRack.selectedItemRackSet = input
+                            end,
+                            get = function()
+                                local selectedItemRackSet = DumbPaladin.db.profile.settings.gear.itemRack.selectedItemRackSet
+
+                                if not selectedItemRackSet then
+                                    return ""
+                                end
+
+                                return DumbPaladin.db.profile.settings.gear.itemRack.selectedItemRackSet
+                            end
+                        }
+                    }
                 }
             }
         }
@@ -414,8 +478,3 @@ function DumbPaladin:OnSettingToggled(info, input)
         Icon:Show("DumbPaladinMiniMapIcon")
     end
 end
-
-
-
-
-
