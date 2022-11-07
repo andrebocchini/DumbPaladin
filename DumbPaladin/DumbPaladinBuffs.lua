@@ -157,8 +157,8 @@ function DumbPaladin:IssueMissingBuffWarnings(missingRequiredBuffs)
     end
 
     if DumbPaladin.db.profile.settings.buffs.warnings.chat then
-        DumbPaladin:PrintMessageToChatWindow(L["MissingBuffsWarning"])
-        DumbPaladin:PrintMessageToChatWindow(accumulatedBuffs)
+        DumbPaladin:IssueChatWarning(L["MissingBuffsWarning"])
+        DumbPaladin:IssueChatWarning(accumulatedBuffs)
     end
 
     if DumbPaladin.db.profile.settings.buffs.warnings.flashScreen then

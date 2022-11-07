@@ -46,8 +46,8 @@ function DumbPaladin:IssueMissingTabardWarnings(desiredTabardName)
     end
 
     if DumbPaladin.db.profile.settings.gear.warnings.chat then
-        DumbPaladin:PrintMessageToChatWindow(L["You have the wrong tabard equipped!"])
-        DumbPaladin:PrintMessageToChatWindow(L["You should be wearing your "] .. desiredTabardName)
+        DumbPaladin:IssueChatWarning(L["You have the wrong tabard equipped!"])
+        DumbPaladin:IssueChatWarning(L["You should be wearing your "] .. desiredTabardName)
     end
 
     if DumbPaladin.db.profile.settings.gear.warnings.flashScreen then
@@ -86,10 +86,27 @@ function DumbPaladin:PerformItemRackSetCheckOnUnit(unit)
 end
 
 function DumbPaladin:IssueWrongItemRackSetWarnings(desiredItemRackSet)
-    DumbPaladin:PrintMessageToChatWindow(L["You have the wrong item rack set equipped!"])
-    DumbPaladin:PrintMessageToChatWindow(L["You should be wearing "] .. desiredItemRackSet)
+    if DumbPaladin.db.profile.settings.gear.warnings.raidWarning then
+        DumbPaladin:IssueRaidWarning(L["You have the wrong item rack set equipped!"])
+        DumbPaladin:IssueRaidWarning(L["You should be wearing "] .. desiredItemRackSet)
+    end
 
-    DumbPaladin:IssueRaidWarning(L["You have the wrong item rack set equipped!"])
-    DumbPaladin:IssueRaidWarning(L["You should be wearing "] .. desiredItemRackSet)
+    if DumbPaladin.db.profile.settings.gear.warnings.chat then
+        DumbPaladin:IssueChatWarning(L["You have the wrong item rack set equipped!"])
+        DumbPaladin:IssueChatWarning(L["You should be wearing "] .. desiredItemRackSet)
+    end
+
+    if DumbPaladin.db.profile.settings.gear.warnings.flashScreen then
+        DumbPaladin:IssueScreenFlashWarning()
+    end
+
+    if DumbPaladin.db.profile.settings.gear.warnings.soundWarning then
+        DumbPaladin:IssueSoundWarning()
+    end
+
+    if DumbPaladin.db.profile.settings.gear.warnings.textToSpeech then
+        DumbPaladin:IssueTextToSpeechWarning(L["You have the wrong item rack set equipped!"])
+        DumbPaladin:IssueTextToSpeechWarning(L["You should be wearing "] .. desiredItemRackSet)
+    end
 end
 

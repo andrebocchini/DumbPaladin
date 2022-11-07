@@ -1,5 +1,13 @@
 local L = LibStub("AceLocale-3.0"):GetLocale(DumbPaladin.NAME)
 
+function IssueChatWarning(message)
+    if not message then
+        message = "(nil)"
+    end
+
+    DumbPaladin:PrintMessageToChatWindow(message)
+end
+
 function DumbPaladin:IssueRaidWarning(message)
     if not message then
         message = "(nil)"
