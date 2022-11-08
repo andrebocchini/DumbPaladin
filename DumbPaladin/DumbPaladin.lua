@@ -29,3 +29,13 @@ function DumbPaladin:PrintMessageToChatWindow(string)
 end
 
 
+function DumbPaladin:OnInitialize()
+    DumbPaladin:InitializeDatabase()
+    DumbPaladin:CreateSlashCommands()
+    DumbPaladin:SetupMinimapIcon()
+end
+
+function DumbPaladin:OnEnable()
+    DumbPaladin:RegisterEvents()
+    DumbPaladin:RegisterOptions()
+end

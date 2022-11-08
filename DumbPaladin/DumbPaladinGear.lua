@@ -2,7 +2,8 @@ local L = LibStub("AceLocale-3.0"):GetLocale(DumbPaladin.NAME)
 
 function DumbPaladin:PerformGearChecksOnUnit(unit)
     DumbPaladin:PerformTabardCheckOnUnit(unit)
-    DumbPaladin:PerformItemRackSetCheckOnUnit(unit)
+    DumbPaladin:PerformItemRackSetCheck()
+    DumbPaladin:PerformTalentSpecCheck()
 end
 
 function DumbPaladin:IsSupportedInstance(instanceId)
@@ -64,7 +65,7 @@ function DumbPaladin:IssueMissingTabardWarnings(desiredTabardName)
     end
 end
 
-function DumbPaladin:PerformItemRackSetCheckOnUnit(unit)
+function DumbPaladin:PerformItemRackSetCheck()
     if not DumbPaladin.db.profile.settings.gear.itemRack.checkItemRackSet then
         DumbPaladin:PrintDebugMessageToChatWindow("Item rack set checks disabled. Skipping.")
         return
@@ -110,3 +111,54 @@ function DumbPaladin:IssueWrongItemRackSetWarnings(desiredItemRackSet)
     end
 end
 
+function DumbPaladin:PerformTalentSpecCheck()
+    if not DumbPaladin.db.profile.settings.gear.talentSpec.checkTalentSpec then
+        DumbPaladin:PrintDebugMessageToChatWindow("Spec checks disabled. Skipping.")
+        return
+    end
+
+    DumbPaladin:PrintDebugMessageToChatWindow("Checking spec.")
+
+    local desiredTalentSpecId = DumbPaladin.db.profile.settings.gear.talentSpec.selectedTalentSpec
+
+    if not desiredTalentSpecId then
+        DumbPaladin:PrintDebugMessageToChatWindow("No desired spec selected. Skipping spec check.")
+    end
+
+    local desiredTalentSpecName = desiredTalentSpecId and GetTalentTabInfo(desiredTalentSpecId) or "No desired"
+
+    local currentTalentSpecId = GetActiveTalentGroup()
+    local currentTalentSpecName = GetTalentTabInfo(currentTalentSpecId)
+
+    DumbPaladin:PrintDebugMessageToChatWindow("Desired spec id " .. desiredTalentSpecId .. " and name " .. desiredTalentSpecName)
+    DumbPaladin:PrintDebugMessageToChatWindow("Active spec id " .. currentTalentSpecId .. " and name " .. currentTalentSpecName)
+
+    if currentTalentSpecName ~= desiredTalentSpecName then
+        DumbPaladin:IssueWrongTalentSpecWarnings(desiredTalentSpecName)
+    end
+end
+
+function DumbPaladin:IssueWrongTalentSpecWarnings(desiredTalentSpec)
+    if DumbPaladin.db.profile.settings.gear.warnings.raidWarning then
+        DumbPaladin:IssueRaidWarning(L["You have the wrong spec active!"])
+        DumbPaladin:IssueRaidWarning(L["You should activate "] .. desiredTalentSpec)
+    end
+
+    if DumbPaladin.db.profile.settings.gear.warnings.chat then
+        DumbPaladin:IssueChatWarning(L["You have the wrong spec active!"])
+        DumbPaladin:IssueChatWarning(L["You should activate "] .. desiredTalentSpec)
+    end
+
+    if DumbPaladin.db.profile.settings.gear.warnings.flashScreen then
+        DumbPaladin:IssueScreenFlashWarning()
+    end
+
+    if DumbPaladin.db.profile.settings.gear.warnings.soundWarning then
+        DumbPaladin:IssueSoundWarning()
+    end
+
+    if DumbPaladin.db.profile.settings.gear.warnings.textToSpeech then
+        DumbPaladin:IssueTextToSpeechWarning(L["You have the wrong spec active!"])
+        DumbPaladin:IssueTextToSpeechWarning(L["You should activate "] .. desiredTalentSpec)
+    end
+end

@@ -205,12 +205,16 @@ local DumbPaladin_DefaultDatabase = {
                     textToSpeech = true,
                 },
                 tabards = {
-                    checkTabards = true,
+                    checkTabards = false,
                     selectedTabard = ""
                 },
                 itemRack = {
                     checkItemRackSet = false,
                     selectedItemRackSet = ""
+                },
+                talentSpec = {
+                    checkTalentSpec = false,
+                    selectedTalentSpec = ""
                 }
             },
         },

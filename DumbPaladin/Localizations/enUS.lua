@@ -50,6 +50,12 @@ L["AvailableItemRackSets"] = "Available sets"
 L["You have the wrong item rack set equipped!"] = "You have the wrong item rack set equipped!"
 L["You should be wearing "] = "You should be wearing "
 
+L["SpecSettings"] = "Talent Spec"
+L["CheckTalentSpec"] = "Check talent spec"
+L["AvailableSpecs"] = "Available specs"
+L["You have the wrong spec active!"] = "You have the wrong spec active!"
+L["You should activate "] = "You should activate "
+
 L["ClassBuffsSettings"] = "Class Buffs"
 L["Paladin"] = "Paladin"
 L["Mage"] = "Mage"

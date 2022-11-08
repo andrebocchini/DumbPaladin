@@ -1,6 +1,6 @@
 ## Interface: 30400
 ## Title: DumbPaladin
-## Version: 1.9.1
+## Version: 1.10.0
 ## Authors: MrPlasticJesus
 ## OptionalDeps: Ace3
 ## SavedVariablesPerCharacter: DumbPaladinDB
@@ -11,7 +11,7 @@ Embeds.xml
 
 Localizations\enUS.lua
 
-DumbPaladinBase.lua
+DumbPaladin.lua
 DumbPaladinStaticValues.lua
 DumbPaladinDatabase.lua
 DumbPaladinOptions.lua
@@ -20,4 +20,3 @@ DumbPaladinBuffs.lua
 DumbPaladinGear.lua
 DumbPaladinMinimap.lua
 DumbPaladinEvents.lua
-DumbPaladinInit.lua
