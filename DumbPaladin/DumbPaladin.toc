@@ -1,6 +1,6 @@
 ## Interface: 30400
 ## Title: DumbPaladin
-## Version: 1.10.0
+## Version: 1.10.1
 ## Authors: MrPlasticJesus
 ## OptionalDeps: Ace3
 ## SavedVariablesPerCharacter: DumbPaladinDB

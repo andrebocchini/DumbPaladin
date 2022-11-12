@@ -3,6 +3,7 @@ local AceConfigDialog = LibStub("AceConfigDialog-3.0")
 local AceConfigRegistry = LibStub("AceConfigRegistry-3.0")
 local AceDBOptions = LibStub("AceDBOptions-3.0")
 local L = LibStub("AceLocale-3.0"):GetLocale(DumbPaladin.NAME)
+local LibDBIcon = LibStub("LibDBIcon-1.0")
 
 local function BuildTalentSpecs()
     local availableSpecs = {}
@@ -530,8 +531,8 @@ function DumbPaladin:OnSettingToggled(info, input)
     DumbPaladin:PrintDebugMessageToChatWindow(tostring(info["option"].name) .. " set to: " .. tostring(input))
 
     if DumbPaladin.db.profile.minimap.hide then
-        Icon:Hide("DumbPaladinMiniMapIcon")
+        LibDBIcon:Hide("DumbPaladinMiniMapIcon")
     else
-        Icon:Show("DumbPaladinMiniMapIcon")
+        LibDBIcon:Show("DumbPaladinMiniMapIcon")
     end
 end
